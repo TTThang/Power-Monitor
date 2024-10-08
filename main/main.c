@@ -121,32 +121,32 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
 }
 
 void task_update_data(void *arg) {
-	while(1){
-		if(power_data != NULL){
-			free(power_data);
-		}
-	    data_length = asprintf(&power_data,
-		    "{\n"
-		    "\t\"channels\": [\n"
-		    "\t\t{\"channel\": 1, \"bus_voltage\": %.2f V, \"current\": %.2f mA, \"power\": %.2f mW, \"capacitor\": %.5f mAh, \"consumption\": %.5f mWh, \"battery\": %.2f %%},\n"
-		    "\t\t{\"channel\": 2, \"bus_voltage\": %.2f V, \"current\": %.2f mA, \"power\": %.2f mW, \"capacitor\": %.5f mAh, \"consumption\": %.5f mWh},\n"
-		    "\t\t{\"channel\": 3, \"bus_voltage\": %.2f V, \"current\": %.2f mA, \"power\": %.2f mW, \"capacitor\": %.5f mAh, \"consumption\": %.5f mWh}\n"
-		    "\t],\n"
-		    "\t\"timestamp\": \"%s\"\n"
-		    "}",
-		    ina_data.channel_1.bus_voltage, ina_data.channel_1.current, ina_data.channel_1.power,
-		    ina_data.channel_1.total_mAh, ina_data.channel_1.total_mWh, ina_data.channel_1.battery_remain,
-		    ina_data.channel_2.bus_voltage, ina_data.channel_2.current, ina_data.channel_2.power,
-		    ina_data.channel_2.total_mAh, ina_data.channel_2.total_mWh,
-		    ina_data.channel_3.bus_voltage, ina_data.channel_3.current, ina_data.channel_3.power,
-		    ina_data.channel_3.total_mAh, ina_data.channel_3.total_mWh,
-		    ina_data.timestamp);
+    while(1){
+        if(power_data != NULL){
+            free(power_data);
+        }
+        data_length = asprintf(&power_data,
+            "{\n"
+            "\t\"channels\": [\n"
+            "\t\t{\"channel\": 1, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f, \"battery\": %.2f},\n"
+            "\t\t{\"channel\": 2, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f},\n"
+            "\t\t{\"channel\": 3, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f}\n"
+            "\t],\n"
+            "\t\"timestamp\": \"%s\"\n"
+            "}",
+            ina_data.channel_1.bus_voltage, ina_data.channel_1.current, ina_data.channel_1.power,
+            ina_data.channel_1.total_mAh, ina_data.channel_1.total_mWh, ina_data.channel_1.battery_remain,
+            ina_data.channel_2.bus_voltage, ina_data.channel_2.current, ina_data.channel_2.power,
+            ina_data.channel_2.total_mAh, ina_data.channel_2.total_mWh,
+            ina_data.channel_3.bus_voltage, ina_data.channel_3.current, ina_data.channel_3.power,
+            ina_data.channel_3.total_mAh, ina_data.channel_3.total_mWh,
+            ina_data.timestamp);
 
-	
-	    ESP_LOGI("INA_DATA_JSON", "Updated JSON:\n%s", power_data);
-	    vTaskDelay(pdMS_TO_TICKS(200));
-	}
+        ESP_LOGI("INA_DATA_JSON", "Updated JSON:\n%s", power_data);
+        vTaskDelay(pdMS_TO_TICKS(200));
+    }
 }
+
 
 void task(void *pvParameters)
 {
