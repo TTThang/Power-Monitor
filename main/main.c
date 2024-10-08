@@ -91,7 +91,7 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
 	ina3221_get_bus_voltage(dev, 0, &bus_voltage);
     ina3221_get_shunt_value(dev, 0, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_1.bus_voltage = bus_voltage + (shunt_current)*0.1;
+    ina_data.channel_1.bus_voltage = bus_voltage + (shunt_current/1000)*(-0.1);
     ina_data.channel_1.current = shunt_current;
     ina_data.channel_1.total_mAh += (shunt_current/36000);
     ina_data.channel_1.power = bus_voltage*shunt_current;
@@ -102,7 +102,7 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
 	ina3221_get_bus_voltage(dev, 1, &bus_voltage);
     ina3221_get_shunt_value(dev, 1, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_2.bus_voltage = bus_voltage + (shunt_current)*0.1;
+    ina_data.channel_2.bus_voltage = bus_voltage + (shunt_current/1000)*(-0.1);
     ina_data.channel_2.current = shunt_current;
     ina_data.channel_2.total_mAh += (shunt_current/36000);
     ina_data.channel_2.power = bus_voltage*shunt_current;
@@ -111,8 +111,8 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
     ina3221_get_bus_voltage(dev, 2, &bus_voltage);
     ina3221_get_shunt_value(dev, 2, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_3.bus_voltage = bus_voltage + (shunt_current)*0.1;
-    ina_data.channel_3.current = shunt_current;
+    ina_data.channel_3.bus_voltage = bus_voltage + (shunt_current/1000)*(-0.1);
+    ina_data.channel_3.current = -shunt_current;
     ina_data.channel_3.total_mAh += (shunt_current/36000);
     ina_data.channel_3.power = bus_voltage*shunt_current;
     ina_data.channel_3.total_mWh += (ina_data.channel_3.power/36000);
