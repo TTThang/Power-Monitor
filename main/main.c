@@ -21,7 +21,7 @@ const char *TAG = "POWER-MONITOR";
 #define MODE true
 #endif
 
-#define VOLTAGE_MAX 4.2
+#define VOLTAGE_MAX 4.1
 #define VOLTAGE_MIN 3.0
 
 typedef struct {
@@ -91,13 +91,13 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
 	ina3221_get_bus_voltage(dev, 0, &bus_voltage);
     ina3221_get_shunt_value(dev, 0, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_1.bus_voltage = bus_voltage + (-shunt_current*0.58);
+    ina_data.channel_1.bus_voltage = bus_voltage + (-shunt_current*0.59/1000);
     ina_data.channel_1.current = shunt_current;
     ina_data.channel_1.total_mAh += (shunt_current/36000);
     ina_data.channel_1.power = bus_voltage*shunt_current;
     ina_data.channel_1.total_mWh += (ina_data.channel_1.power/36000);
     
-    ina_data.channel_1.battery_remain = battery_capacitor_remain_cal(bus_voltage);
+    ina_data.channel_1.battery_remain = battery_capacitor_remain_cal(ina_data.channel_1.bus_voltage);
 
 	ina3221_get_bus_voltage(dev, 1, &bus_voltage);
     ina3221_get_shunt_value(dev, 1, &shunt_voltage, &shunt_current);
