@@ -33,6 +33,10 @@
 #include "mqtt_client.h"
 #include "WiFiConnection.h"
 
+#include "esp_tls.h"
+#include "esp_ota_ops.h"
+#include <sys/param.h>
+
 #include "esp_sntp.h"
 
 #ifdef __cplusplus
@@ -40,6 +44,14 @@ extern "C" {
 #endif
 
 extern const char *TAG;
+
+/*#if CONFIG_BROKER_CERTIFICATE_OVERRIDDEN == 1
+static const uint8_t mqtt_eclipseprojects_io_pem_start[]  = "-----BEGIN CERTIFICATE-----\n" CONFIG_BROKER_CERTIFICATE_OVERRIDE "\n-----END CERTIFICATE-----";
+#else*/
+extern const uint8_t mqtt_eclipseprojects_io_pem_start[]   asm("_binary_mqtt_eclipseprojects_io_pem_start");
+// #endif
+extern const uint8_t mqtt_eclipseprojects_io_pem_end[]   asm("_binary_mqtt_eclipseprojects_io_pem_end");
+
 
 void time_sync_notification_cb(struct timeval *tv) {
     ESP_LOGI(TAG, "Time synchronized successfully");
@@ -79,12 +91,15 @@ void obtain_time(void) {
 }
 
 esp_mqtt_client_config_t mqtt_cfg = {
-    .broker.address ={
-		.uri = "mqtt://192.168.1.22:1883",
+    .broker ={
+		.address.uri = "mqtts://106fe3e8b38542f1bac5bd11d49751c9.s1.eu.hivemq.cloud:8883",
+		.verification = {
+			.certificate = (const char *)mqtt_eclipseprojects_io_pem_start,	
+		}
 	},
     .credentials = {
-		.username = "tutru20139",
-		.authentication.password = "20139"
+		.username = "alphabits",
+		.authentication.password = "AlphaBits1"
 	},
 };
 

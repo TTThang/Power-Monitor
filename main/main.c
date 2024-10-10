@@ -91,7 +91,7 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
 	ina3221_get_bus_voltage(dev, 0, &bus_voltage);
     ina3221_get_shunt_value(dev, 0, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_1.bus_voltage = bus_voltage + (shunt_current/1000)*(-0.1);
+    ina_data.channel_1.bus_voltage = bus_voltage + (-shunt_current*0.58);
     ina_data.channel_1.current = shunt_current;
     ina_data.channel_1.total_mAh += (shunt_current/36000);
     ina_data.channel_1.power = bus_voltage*shunt_current;
