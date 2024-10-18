@@ -198,7 +198,7 @@ void init_mqtt(void)
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
-    WiFi_STA_Connect("Alpha Bits", "second.brains", WIFI_AUTH_WPA2_PSK);
+    WiFi_STA_Connect("abc.mesh", "secondbrains", WIFI_AUTH_WPA2_PSK);
 	
 	obtain_time();
 	

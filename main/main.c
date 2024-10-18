@@ -21,8 +21,8 @@ const char *TAG = "POWER-MONITOR";
 #define MODE true
 #endif
 
-#define VOLTAGE_MAX 4.1
-#define VOLTAGE_MIN 3.0
+#define VOLTAGE_MAX 12.3
+#define VOLTAGE_MIN 9.0
 
 typedef struct {
     float bus_voltage;
@@ -91,31 +91,34 @@ void update_ina_data(ina3221_t* dev,INA_Data_Snapshot_t* snapshot) {
 	ina3221_get_bus_voltage(dev, 0, &bus_voltage);
     ina3221_get_shunt_value(dev, 0, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_1.bus_voltage = bus_voltage + (-shunt_current*0.59/1000);
     ina_data.channel_1.current = shunt_current;
-    ina_data.channel_1.total_mAh += (shunt_current/36000);
+    ina_data.channel_1.bus_voltage = bus_voltage + (ina_data.channel_1.current/1000)*(-0.1);
+    ina_data.channel_1.total_mAh += (ina_data.channel_1.current/36000);
     ina_data.channel_1.power = bus_voltage*shunt_current;
     ina_data.channel_1.total_mWh += (ina_data.channel_1.power/36000);
     
-    ina_data.channel_1.battery_remain = battery_capacitor_remain_cal(ina_data.channel_1.bus_voltage);
+    // ina_data.channel_1.battery_remain = battery_capacitor_remain_cal(ina_data.channel_1.bus_voltage);
 
 	ina3221_get_bus_voltage(dev, 1, &bus_voltage);
     ina3221_get_shunt_value(dev, 1, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_2.bus_voltage = bus_voltage + (shunt_current/1000)*(-0.1);
-    ina_data.channel_2.current = shunt_current;
-    ina_data.channel_2.total_mAh += (shunt_current/36000);
+    ina_data.channel_2.current = -shunt_current;
+    ina_data.channel_2.bus_voltage = bus_voltage + (ina_data.channel_2.current/1000)*(-0.1);
+    ina_data.channel_2.total_mAh += (ina_data.channel_2.current/36000);
     ina_data.channel_2.power = bus_voltage*shunt_current;
     ina_data.channel_2.total_mWh += (ina_data.channel_2.power/36000);
 
     ina3221_get_bus_voltage(dev, 2, &bus_voltage);
     ina3221_get_shunt_value(dev, 2, &shunt_voltage, &shunt_current);
     
-    ina_data.channel_3.bus_voltage = bus_voltage + (shunt_current/1000)*(-0.1);
-    ina_data.channel_3.current = shunt_current;
-    ina_data.channel_3.total_mAh += (shunt_current/36000);
+    ina_data.channel_3.current = -shunt_current;
+    ina_data.channel_3.bus_voltage = bus_voltage + (ina_data.channel_3.current/1000)*(-0.1);
+    ina_data.channel_3.current = -shunt_current;
+    ina_data.channel_3.total_mAh += (ina_data.channel_3.current/36000);
     ina_data.channel_3.power = bus_voltage*shunt_current;
     ina_data.channel_3.total_mWh += (ina_data.channel_3.power/36000);
+    
+    ina_data.channel_3.battery_remain = battery_capacitor_remain_cal(ina_data.channel_3.bus_voltage);
 
     update_timestamp(snapshot);
 }
@@ -162,7 +165,7 @@ void task(void *pvParameters)
     memset(&dev.i2c_dev, 0, sizeof(i2c_dev_t));
 
     ESP_ERROR_CHECK(i2cdev_init());
-    ESP_ERROR_CHECK(ina3221_init_desc(&dev, 0x40, I2C_PORT, 48, 47));
+    ESP_ERROR_CHECK(ina3221_init_desc(&dev, 0x40, I2C_PORT, 21, 22));
 
 #ifndef STRUCT_SETTING
     ESP_ERROR_CHECK(ina3221_set_options(&dev, MODE, true, true)); 
