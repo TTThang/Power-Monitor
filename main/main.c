@@ -137,11 +137,11 @@ void task_update_data(void *arg) {
             "\t\"timestamp\": \"%s\"\n"
             "}",
             ina_data.channel_1.bus_voltage, ina_data.channel_1.current, ina_data.channel_1.power,
-            ina_data.channel_1.total_mAh, ina_data.channel_1.total_mWh, ina_data.channel_1.battery_remain,
+            ina_data.channel_1.total_mAh, ina_data.channel_1.total_mWh, 
             ina_data.channel_2.bus_voltage, ina_data.channel_2.current, ina_data.channel_2.power,
             ina_data.channel_2.total_mAh, ina_data.channel_2.total_mWh,
             ina_data.channel_3.bus_voltage, ina_data.channel_3.current, ina_data.channel_3.power,
-            ina_data.channel_3.total_mAh, ina_data.channel_3.total_mWh,
+            ina_data.channel_3.total_mAh, ina_data.channel_3.total_mWh, ina_data.channel_3.battery_remain,
             ina_data.timestamp);
 
         ESP_LOGI("INA_DATA_JSON", "Updated JSON:\n%s", power_data);
