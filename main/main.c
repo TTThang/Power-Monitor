@@ -130,9 +130,9 @@ void task_update_data(void *arg) {
         data_length = asprintf(&power_data,
             "{\n"
             "\t\"channels\": [\n"
-            "\t\t{\"channel\": 1, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f, \"battery\": %.2f},\n"
+            "\t\t{\"channel\": 1, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f},\n"
             "\t\t{\"channel\": 2, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f},\n"
-            "\t\t{\"channel\": 3, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f}\n"
+            "\t\t{\"channel\": 3, \"bus_voltage\": %.2f, \"current\": %.2f, \"power\": %.2f, \"capacitor\": %.5f, \"consumption\": %.5f, \"battery\": %.2f}\n"
             "\t],\n"
             "\t\"timestamp\": \"%s\"\n"
             "}",
